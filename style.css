@@ -31,6 +31,7 @@
     flex-direction: column;
     border: 1px solid brown;
     background-color: #fce5cd;
+    width: 30%;
 }
 
 .monster-card img{
@@ -60,3 +61,25 @@
 .nameCont{
     border-bottom: 3px solid #660000;
 }
+
+.mainStatCont{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1em;
+    border-bottom: 3px solid #660000;
+}
+
+.statBox{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.skillCont{
+    display: flex;
+    flex-direction: column;
+    border-bottom: 3px solid #660000;
+}
+

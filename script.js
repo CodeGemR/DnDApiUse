@@ -35,49 +35,87 @@ async function searchMonster(monsterName){
         const name = document.createElement("h2");
         name.textContent = monsterData.name;
         const size = document.createElement("p");
-        size.textContent = `${monsterData.size} ${monsterData.type}`;
+        size.textContent = `${monsterData.size} ${monsterData.type}, ${monsterData.alignment}`;
+        const nameCont = document.createElement("div");
+        nameCont.className = "nameCont";
+        nameCont.append(name,size);
 
         const subStatCont = document.createElement("div");
         subStatCont.className = "subStat";
 
-        const nameCont = document.createElement("div");
-        nameCont.className = "nameCont";
-
-        const armor = document.createElement("p");
-        armor.textContent = `Armor Class: ${ac} (${acType})`;
-        
-        const speed = document.createElement("p");
-        speed.textContent = `Speed ${monsterData.speed.walk}`;   
-
-        const hitPoints = document.createElement("p");
-        hitPoints.textContent = `Hit Points ${monsterData.hit_points}(${monsterData.hit_points_roll})`
+        [
+            `Amor Class: ${ac}(${acType})`,
+            `Hit Points : ${monsterData.hit_points} (${monsterData.hit_points_roll})`,
+            `Speed: ${monsterData.speed.walk}`
+        ].forEach(text => {
+            const p = document.createElement("p");
+            p.textContent = text;
+            subStatCont.appendChild(p)
+        }); 
 
         const mainStats = document.createElement("div");
         mainStats.className = "mainStatCont";
 
-        const strCont = document.createElement("div")
-        strCont.className = "strCont";
+        const statsMap = [
+        { key: "STR", value: monsterData.strength },
+        { key: "DEX", value: monsterData.dexterity },
+        { key: "CON", value: monsterData.constitution },
+        { key: "INT", value: monsterData.intelligence },
+        { key: "WIS", value: monsterData.wisdom },
+        { key: "CHA", value: monsterData.charisma },
+        ];
+        statsMap.forEach(stat => {
+            const box = document.createElement("div");
+            box.className = "statBox"
 
-        const dexCont = document.createElement("div")
-        dexCont.className = "dexCont";
+            const label = document.createElement("p")
+            label.textContent = stat.key;
+            
+            const value = document.createElement("p")
+            value.textContent = `${stat.value} (${getBonus(stat.value)})`;
 
-        const conCont = document.createElement("div")
-        conCont.className = "conCont";
+            box.append(label, value);
+            mainStats.appendChild(box);
 
-        const intCont = document.createElement("div")
-        intCont.className = "intCont";
+        });
 
-        const wisCont = document.createElement("div")
-        wisCont.className = "wisCont";
+        function getBonus(stats){
+            const bonus = Math.floor((stats - 11) / 2)
+            return bonus >= 0 ? `+${bonus}` : `${bonus}`
+        };
 
-        const chaCont = document.createElement("div")
-        chaCont.className = "chaCont";
+        const statMap = {
+        CON: "Con",
+        DEX: "Dex",
+        STR: "Str",
+        WIS: "Wis",
+        INT: "Int",
+        CHA: "Cha"
+        };
 
-        const strName = document.createElement("p");
-        strName.textContent = `Strength`;
+        const skillCont = document.createElement("div");
+        skillCont.className = "skillCont"
 
-        const str = document.createElement("p");
-        str.textContent = `${monsterData.strength}(${modifier})`;
+        const savingThowVal = monsterData.proficiencies?.filter(p => ["CON","DEX","STR","WIS","INT","CHA"].some(stat => p.proficiency.name.includes(stat))).map(p => ({name : p.proficiency.name.split(": ")[1], value: p.value}));
+        const savingThrowDisplay = savingThowVal?.map(s => `${statMap[s.name.toUpperCase()]} +${s.value}`).join(", ")
+
+        const savingThrow = document.createElement("p");
+        savingThrow.textContent = `Saving Throws ${savingThrowDisplay}`
+        skillCont.appendChild(savingThrow);
+
+        const sense = monsterData.senses;
+        const senses = document.createElement("p")
+        const sensesText = Object.keys(sense).map(key => `${key.replaceAll("_"," ")} ${sense[key]}`);
+        senses.textContent = sensesText;
+        skillCont.appendChild(senses)
+
+        function addParagraph(container,label,value){
+            const p = document.createElement("p");
+            p.textContent = `${label} ${value}`;
+            container.appendChild(p);
+        }
+        addParagraph(skillCont, "Language", monsterData.languages);
+        addParagraph(skillCont, "Challenge", `${monsterData.challenge_rating}(${monsterData.xp})`)
 
         
 
@@ -87,24 +125,13 @@ async function searchMonster(monsterName){
         img.className = `monster-img`;
         
         monsterResult.appendChild(card);
-        card.appendChild(nameCont);
-        card.appendChild(subStatCont);
-        card.appendChild(mainStats);
-        nameCont.appendChild(name);
-        nameCont.appendChild(size);
-        subStatCont.appendChild(armor);
-        subStatCont.appendChild(speed);
-        subStatCont.appendChild(hitPoints);
-        card.appendChild(mainStats)
-        mainStats.appendChild(strCont)
-        strCont.appendChild(strName)
-        strCont.appendChild(str)
-        mainStats.appendChild(dexCont)
-        mainStats.appendChild(conCont)
-        mainStats.appendChild(intCont)
-        mainStats.appendChild(wisCont)
-        mainStats.appendChild(chaCont)
-        card.appendChild(img);
+        card.append(
+            nameCont,
+            subStatCont,
+            mainStats,
+            skillCont,
+            img
+        )
         console.log(monsterData)
     }else{
         monsterResult.textContent = "Monster Not found";
