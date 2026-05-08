@@ -1,0 +1,62 @@
+@font-face{
+    font-family: scalyRemade;
+    src: url(fonts/Scaly\ Sans.otf);
+    font-weight: normal;
+}
+@font-face {
+    font-family: scalyBold;
+    src: url(fonts/Scaly\ Sans\ Bold.otf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: scalyItalic;
+    src: url(fonts/Scaly\ Sans\ Italic.otf);
+    font-style: italic;
+}
+@font-face {
+    font-family: scalyBoldItalic;
+    src: url(fonts/Scaly\ Sans\ Bold\ Italic.otf);
+    font-style: italic;
+    font-weight: bold;
+}
+
+@font-face{
+    font-family: solbera;
+    src: url(fonts/Mr\ Eaves\ Small\ Caps.otf);
+    font-weight: normal;
+}
+.monster-card{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid brown;
+    background-color: #fce5cd;
+}
+
+.monster-card img{
+    width: 100px;
+}
+
+.monster-card h2{
+    font-family: solbera;
+    text-transform: uppercase;
+    color: #660000;
+}
+
+.monster-card p{
+    color: #660000;
+    margin: 0;
+}
+
+.subStat{
+    border-bottom: 3px solid #660000;
+    padding: 2px;
+}
+
+.nameCont h2{
+    margin: 0;
+}
+
+.nameCont{
+    border-bottom: 3px solid #660000;
+}
