@@ -9,7 +9,10 @@
 </head>
 <body>
     <div class="monsterContainer">
-        <input type="text" id="monsterInput" placeholder="Search for DND monsters">
+        <input type="text" list="monsters" id="monsterInput" placeholder="Search for DND monsters">
+        <datalist id="monsters">
+            
+        </datalist>
         <button id="searchButton">Search</button>
         <div id="monsterResult" class="monster-Result"></div>
     </div>

@@ -1,6 +1,7 @@
 const monsterInput = document.getElementById("monsterInput")
 const searchButton = document.getElementById("searchButton")
 const monsterResult = document.getElementById("monsterResult")
+const monsterList = document.getElementById("monsters")
 
 searchButton.addEventListener("click", () => {
     const monsterName = monsterInput.value.toLowerCase();
@@ -11,13 +12,49 @@ searchButton.addEventListener("click", () => {
     }
 });
 
-async function searchMonster(monsterName){
-    monsterResult.textContent = "Searching..."
+let monsters = [];
+let monstersLoaded = false;
+
+async function loadMonster() {
     const response = await fetch(
         "https://www.dnd5eapi.co/api/2014/monsters"
     );
     const data = await response.json();
-    const monsters = data.results;
+    monsters = data.results;
+    monstersLoaded = true;
+}
+
+loadMonster();
+
+monsterInput.addEventListener("input",() => {
+    const value = monsterInput.value.toLowerCase().trim()
+
+    if(!monstersLoaded) return;
+
+    if(!value){
+        monsterList.replaceChildren();
+        return;
+    }
+    const matches = monsters.filter(m => m.name.toLowerCase().includes(value)).slice(0,6);
+
+    renderDropDown(matches);
+})
+
+function renderDropDown(list){
+    monsterList.replaceChildren();
+    const fragment = document.createDocumentFragment();
+    list.forEach(monster => {
+        const option = document.createElement("option");
+        option.className = "dropDownOption";
+        option.textContent = monster.name;
+        fragment.appendChild(option)
+    })
+    monsterList.appendChild(fragment)
+}
+
+
+async function searchMonster(monsterName){
+    monsterResult.textContent = "Searching..."
     const matchedMonster = monsters.find(
         (monster) => monster.name.toLowerCase().includes(monsterName)
     );
