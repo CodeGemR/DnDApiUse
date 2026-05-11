@@ -32,6 +32,7 @@
     border: 1px solid brown;
     background-color: #fce5cd;
     width: 30%;
+    line-height: 1.6;
 }
 
 .monster-card img{
@@ -76,6 +77,9 @@
     justify-content: center;
     align-items: center;
 }
+.boldStat{
+    font-weight: 700;
+}
 
 .skillCont{
     display: flex;
@@ -83,3 +87,19 @@
     border-bottom: 3px solid #660000;
 }
 
+p.size-font{
+    color: black;
+    font-size: 0.7em;
+}
+
+.boldBlack{
+    color: black;
+}
+
+p.normalBlack{
+    color: black;
+}
+
+.underlineH2{
+    border-bottom: 3px solid #660000;
+}
