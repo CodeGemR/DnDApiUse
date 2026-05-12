@@ -52,6 +52,30 @@ function renderDropDown(list){
     monsterList.appendChild(fragment)
 }
 
+function addParagraph(container,label,value){
+    const p = document.createElement("p");
+    const bold = document.createElement("strong");
+    bold.textContent = label;
+
+    p.appendChild(bold);
+    p.append(` ${value}`);
+
+    container.appendChild(p);
+}
+
+function addSmallParagraph(container,label,value){
+    const p = document.createElement("p");
+    const bold = document.createElement("strong");
+    bold.textContent = label;
+    bold.className = "boldBlack"
+    p.className = "normalBlack"
+
+    p.appendChild(bold);
+    p.append(` ${value}`)
+
+    container.appendChild(p);
+}
+
 
 async function searchMonster(monsterName){
     monsterResult.textContent = "Searching..."
@@ -152,32 +176,6 @@ async function searchMonster(monsterName){
 
         const actionCont = document.createElement("div");
         actionCont.className = "actionCont" 
-
-
-        function addParagraph(container,label,value){
-            const p = document.createElement("p");
-            const bold = document.createElement("strong");
-            bold.textContent = label;
-
-            p.appendChild(bold);
-            p.append(` ${value}`);
-
-            container.appendChild(p);
-        }
-
-        function addSmallParagraph(container,label,value){
-            const p = document.createElement("p");
-            const bold = document.createElement("strong");
-            bold.textContent = label;
-            bold.className = "boldBlack"
-            p.className = "normalBlack"
-
-            p.appendChild(bold);
-            p.append(` ${value}`)
-
-            container.appendChild(p);
-        }
-
 
         addParagraph(subStatCont, "Armor Class", `${ac}(${acType})`)
         addParagraph(subStatCont, "Hit Points", `${monsterData.hit_points} (${monsterData.hit_points_roll})`)
