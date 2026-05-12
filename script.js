@@ -2,6 +2,8 @@ const monsterInput = document.getElementById("monsterInput")
 const searchButton = document.getElementById("searchButton")
 const monsterResult = document.getElementById("monsterResult")
 const monsterList = document.getElementById("monsters")
+const ruleResult = document.getElementById("ruleResult")
+const searchRuleButton = document.getElementById("searchRuleButton")
 
 searchButton.addEventListener("click", () => {
     const monsterName = monsterInput.value.toLowerCase();
@@ -22,9 +24,11 @@ async function loadMonster() {
     const data = await response.json();
     monsters = data.results;
     monstersLoaded = true;
+    console.log(data)
 }
 
 loadMonster();
+
 
 monsterInput.addEventListener("input",() => {
     const value = monsterInput.value.toLowerCase().trim()
@@ -75,6 +79,13 @@ function addSmallParagraph(container,label,value){
 
     container.appendChild(p);
 }
+
+monsterInput.addEventListener(`keypress`, (e) => {
+    const monsterName = monsterInput.value.toLowerCase();
+    if(event.key === "Enter"){
+        searchMonster(monsterName);
+    }
+})
 
 
 async function searchMonster(monsterName){
@@ -218,5 +229,80 @@ async function searchMonster(monsterName){
         console.log(monsterData)
     }else{
         monsterResult.textContent = "Monster Not found";
+    }
+}
+
+
+
+let rules = [];
+let rulesLoaded = false;
+
+async function loadRules(){
+    const response = await fetch(
+        "https://www.dnd5eapi.co/api/2014/rule-sections"
+    );
+    const data = await response.json();
+    rules = data.results;
+    rulesLoaded = true;
+    console.log(data)
+}
+loadRules();
+
+searchRuleButton.addEventListener("click", () => {
+    const ruleName = ruleInput.value.toLowerCase();
+    if (ruleName){
+        searchRules(ruleName);
+    } else {
+        ruleResult.textContent = "Please enter a rule"
+    }
+});
+
+async function searchRules(ruleName){
+    ruleResult.textContent = "Searching...";
+    if(!rulesLoaded){
+        ruleResult.textContent = "Not yet loaded"
+        return;
+    }
+    const matchedRule = rules.find(
+    (rule) => rule.name.toLowerCase().includes(ruleName))
+    if(matchedRule){
+        ruleResult.replaceChildren()
+        const response = await fetch(
+            `https://www.dnd5eapi.co${matchedRule.url}`
+        );
+        const ruleData = await response.json();
+        const card = document.createElement("div")
+        card.className = "rule-card"
+
+        const ruleCont = document.createElement("div")
+        ruleCont.className = "ruleCont";
+
+        const ruleText = ruleData.desc;
+        const textParts = ruleText.split("### ")
+        const mainSection = textParts.shift();
+
+        const mainTitle = document.createElement("h2");
+        mainTitle.textContent = mainSection.split("\n")[0].replace("## ", " ");
+        ruleCont.appendChild(mainTitle)
+
+        textParts.forEach(part => {
+            const lines = part.split("\n\n");
+            const sectionTitle = document.createElement("h2");
+            sectionTitle.textContent = lines[0];
+
+            const sectionBody = document.createElement("p");
+            sectionBody.textContent = lines.slice(1).join("\n\n").replace("#", " ");
+            ruleCont.appendChild(sectionTitle)
+            ruleCont.appendChild(sectionBody)
+        })
+
+    
+        ruleResult.appendChild(card)
+        card.append(
+            ruleCont,
+        )
+        
+    }else{
+        ruleResult.textContent = "no rule found"
     }
 }
