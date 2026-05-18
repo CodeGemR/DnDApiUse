@@ -31,9 +31,6 @@ body{
     display: flex;
     justify-content: space-between;
 }
-.monsterContainer{
-    width: 50%;
-}
 
 .monster-Result{
     width: 80%;
@@ -143,5 +140,30 @@ p.normalBlack{
 }
 
 .rulesContainer{
-    width: 50%  ;
+    position: relative;
+    width: 50%;
+}
+
+.monsterContainer{
+    position: relative;
+    width: 50%;
+}
+
+
+.dropDown{
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    width: 300px;
+    background: white;
+    position: absolute;
+}
+
+.dropDownOption {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.dropDownOption:hover{
+    background: #eee;
 }

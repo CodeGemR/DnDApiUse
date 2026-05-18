@@ -4,6 +4,8 @@ const monsterResult = document.getElementById("monsterResult")
 const monsterList = document.getElementById("monsters")
 const ruleResult = document.getElementById("ruleResult")
 const searchRuleButton = document.getElementById("searchRuleButton")
+const ruleInput = document.getElementById("ruleInput")
+const ruleList = document.getElementById("rules")
 
 searchButton.addEventListener("click", () => {
     const monsterName = monsterInput.value.toLowerCase();
@@ -39,7 +41,7 @@ monsterInput.addEventListener("input",() => {
         monsterList.replaceChildren();
         return;
     }
-    const matches = monsters.filter(m => m.name.toLowerCase().includes(value)).slice(0,6);
+    const matches = monsters.filter(m => m.name.toLowerCase().includes(value));
 
     renderDropDown(matches);
 })
@@ -48,11 +50,19 @@ function renderDropDown(list){
     monsterList.replaceChildren();
     const fragment = document.createDocumentFragment();
     list.forEach(monster => {
-        const option = document.createElement("option");
+        const option = document.createElement("div");
         option.className = "dropDownOption";
         option.textContent = monster.name;
+
+        option.addEventListener("click", () => {
+            monsterInput.value = monster.name;
+            monsterList.replaceChildren();
+            const monsterName = monsterInput.value.toLowerCase();
+            searchMonster(monsterName);
+            console.log(searchMonster(monsterName));
+        })
         fragment.appendChild(option)
-    })
+    })  
     monsterList.appendChild(fragment)
 }
 
@@ -82,7 +92,7 @@ function addSmallParagraph(container,label,value){
 
 monsterInput.addEventListener(`keypress`, (e) => {
     const monsterName = monsterInput.value.toLowerCase();
-    if(event.key === "Enter"){
+    if(e.key === "Enter"){
         searchMonster(monsterName);
     }
 })
@@ -305,4 +315,34 @@ async function searchRules(ruleName){
     }else{
         ruleResult.textContent = "no rule found"
     }
+}
+ruleInput.addEventListener("input",() => {
+    const value = ruleInput.value.toLowerCase().trim()
+
+    if(!rulesLoaded) return;
+
+    if(!value){
+        renderRuleDropDown();
+        return;
+    }
+    const matches = rules.filter(m => m.name.toLowerCase().includes(value));
+
+    renderRuleDropDown(matches);
+})
+
+function renderRuleDropDown(list){
+    ruleList.replaceChildren();
+    const fragment = document.createDocumentFragment();
+    list.forEach(rule => {
+        const option = document.createElement("div");
+        option.className = "dropDownOption";
+        option.textContent = rule.name;
+
+        option.addEventListener("click", () => {
+            ruleInput.value = rule.name;
+            ruleList.replaceChildren();
+        })
+        fragment.appendChild(option)
+    })  
+    ruleList.appendChild(fragment)
 }
