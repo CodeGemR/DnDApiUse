@@ -7,6 +7,8 @@ const searchRuleButton = document.getElementById("searchRuleButton")
 const ruleInput = document.getElementById("ruleInput")
 const ruleList = document.getElementById("rules")
 
+import { addParagraph } from "./modules/addParagraph.js"
+
 searchButton.addEventListener("click", () => {
     const monsterName = monsterInput.value.toLowerCase();
     if (monsterName){
@@ -59,23 +61,13 @@ function renderDropDown(list){
             monsterList.replaceChildren();
             const monsterName = monsterInput.value.toLowerCase();
             searchMonster(monsterName);
-            console.log(searchMonster(monsterName));
         })
         fragment.appendChild(option)
     })  
     monsterList.appendChild(fragment)
 }
 
-function addParagraph(container,label,value){
-    const p = document.createElement("p");
-    const bold = document.createElement("strong");
-    bold.textContent = label;
 
-    p.appendChild(bold);
-    p.append(` ${value}`);
-
-    container.appendChild(p);
-}
 
 function addSmallParagraph(container,label,value){
     const p = document.createElement("p");
@@ -341,6 +333,8 @@ function renderRuleDropDown(list){
         option.addEventListener("click", () => {
             ruleInput.value = rule.name;
             ruleList.replaceChildren();
+            const ruleName = ruleInput.value.toLowerCase();
+            searchRules(ruleName);
         })
         fragment.appendChild(option)
     })  
