@@ -283,6 +283,8 @@ async function searchRules(ruleName){
         const textParts = ruleText.split("### ")
         const mainSection = textParts.shift();
 
+        console.log(ruleText)
+
         const mainTitle = document.createElement("h2");
         mainTitle.textContent = mainSection.split("\n")[0].replace("## ", " ");
         ruleCont.appendChild(mainTitle)
